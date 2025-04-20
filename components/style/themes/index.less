@@ -1,1 +1,7 @@
 @import './default.less';
+
+// Import dark theme variables
+// This will be conditionally applied based on theme context
+[data-theme='dark'] {
+  @import './dark.less';
+}
