@@ -18,6 +18,27 @@ export default function scrollTo(y: number, options: ScrollToOptions = {}) {
   const scrollTop = getScroll(container, true);
   const startTime = Date.now();
 
+  // If the target position is the same as the current position, just call the callback
+  if (scrollTop === y) {
+    if (typeof callback === 'function') {
+      callback();
+    }
+    return;
+  }
+
+  // Handle zero duration case - immediate scroll without animation
+  if (duration <= 0) {
+    if (container === window) {
+      window.scrollTo(window.pageXOffset, y);
+    } else {
+      (container as HTMLElement).scrollTop = y;
+    }
+    if (typeof callback === 'function') {
+      callback();
+    }
+    return;
+  }
+
   const frameFunc = () => {
     const timestamp = Date.now();
     const time = timestamp - startTime;
